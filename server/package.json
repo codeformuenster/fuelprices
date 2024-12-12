@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for fuel-price app",
+  "main": "index.js",
+  "type": "module",
+  "repository": "https://github.com/codeformuenster/fuelprices",
+  "author": "milk-2-dev",
+  "license": "MIT",
+  "scripts": {
+    "local": "dotenv -e .env.local nodemon index.js",
+    "dev": "dotenv -e .env.development nodemon index.js",
+    "prod": "dotenv -e .env.production nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.0",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.4.2",
+    "nodemon": "^3.1.7"
+  }
+}

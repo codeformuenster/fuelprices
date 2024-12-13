@@ -14,13 +14,9 @@ export const createBulk = async (req, res) => {
     const currentStations = await Station.find({});
     const currentStationsIds = currentStations.map(({marketTransparencyId}) => marketTransparencyId);
 
-    console.log('recived data - ', stationsData.length);
-
     const filteredStations = stationsData.filter((item) => {
       return !currentStationsIds.some((id) => id === item.marketTransparencyId);
     });
-
-    console.log('filterred - ', filteredStations.length);
 
     if (filteredStations.length > 0) {
       const newStationsData = await Promise.all(filteredStations.map(async ({marketTransparencyId, location}) => {

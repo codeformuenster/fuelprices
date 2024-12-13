@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 
 import connectDB from './mongodb/connect.js';
 import routes from './routes/index.js';
+import './cron.js';
 
 dotenv.config();
 
@@ -21,8 +22,8 @@ app.get('/', (req, res) => {
 const startServer = async () => {
   console.group('start server');
   try {
-    if(process.env.MONGODB_URL !== ''){
-      connectDB(process.env.MONGODB_URL).catch(console.log)
+    if (process.env.MONGODB_URL !== '') {
+      connectDB(process.env.MONGODB_URL).catch(console.log);
     }
 
     app.listen(process.env.PORT, () => {

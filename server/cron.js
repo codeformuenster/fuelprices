@@ -72,6 +72,6 @@ export const fetchAndSavePrice = async () => {
   }
 };
 
-if (process.env.ENV !== 'local') {
+if (process.env.NODE_ENV !== 'local') {
   cron.schedule('*/10 * * * *', fetchAndSavePrice);
 }

@@ -8,9 +8,9 @@
   "homepage": "https://github.com/codeformuenster/fuelprices#readme",
   "license": "MIT",
   "scripts": {
-    "dev:local": "vite --mode localenv",
+    "local": "vite --mode localenv",
     "dev": "vite build --mode development",
-    "build:prod": "vite build --mode production",
+    "prod": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {

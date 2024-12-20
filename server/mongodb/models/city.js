@@ -13,9 +13,6 @@ const City = new mongoose.Schema({
       type: [ Number ], // [longitude, latitude]
       required: true
     }
-  },
-  default: {
-    type: Boolean
   }
 }, {
   toJSON: {

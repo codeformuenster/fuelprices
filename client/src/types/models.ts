@@ -1,18 +1,32 @@
-
 export interface City {
   id: string;
   name: string;
-  postCode: number
+  postCode: number;
   location: {
     type: 'Point'
     coordinates: number[]
-  }
+  };
 }
 
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  category: string;
+type Trend = null | 'up' | 'down';
+
+export interface Station {
+  id: string,
+  name: string,
+  address: string,
+  city: City,
+  location: {
+    type: 'Point'
+    coordinates: number[]
+  },
+  marketTransparencyId: string,
+  super: number,
+  e10: number,
+  diesel: number,
+  latestPriceUpdatedAt: Date,
+  trend: {
+    e10: Trend,
+    super: Trend,
+    diesel: Trend,
+  }
 }

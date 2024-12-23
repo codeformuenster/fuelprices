@@ -6,8 +6,8 @@ import cityRoutes from './cityRoutes.js';
 const router = express.Router();
 
 // router.use(your router);
-router.use(stationRoutes);
 router.use(refreshServerRoutes);
 router.use(cityRoutes);
+router.use(stationRoutes);
 
 export default router;

@@ -1,3 +1,5 @@
+import mapboxgl from 'mapbox-gl';
+
 export interface City {
   id: string;
   name: string;
@@ -17,7 +19,7 @@ export interface Station {
   city: City,
   location: {
     type: 'Point'
-    coordinates: number[]
+    coordinates:  mapboxgl.LngLatLike
   },
   marketTransparencyId: string,
   super: number,

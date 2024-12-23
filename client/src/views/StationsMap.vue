@@ -27,6 +27,12 @@ import type { Station } from '@/types/models.ts';
 interface Props {
   center: number[];
   stations: Station[];
+  activeStation: string;
+}
+
+interface Markers {
+  id: string;
+  marker: mapboxgl.Marker;
 }
 
 const props = defineProps<Props>();
@@ -34,7 +40,7 @@ const props = defineProps<Props>();
 const mapRef: Ref<null | mapboxgl.Map> = ref(null);
 const mapContainerRef: Ref<string | HTMLElement> = ref('');
 const isPending: Ref<Boolean> = ref(true);
-const markers: Ref<mapboxgl.Marker[]> = ref([]);
+const markers: Ref<Markers[]> = ref([]);
 
 const initMapBox = (center?: LngLatLike) => {
   mapboxgl.accessToken = 'pk.eyJ1IjoibWlsay0yLWRldiIsImEiOiJjbTNmdzdjeGkwMDh6MnFzOGsxaDRibGxyIn0.qfDvVCwBAFD1lMbOT4O9Xw';
@@ -91,7 +97,7 @@ ${price.slice(0, price.length - 1)}
 
 const clearMarkers = () => {
   for (let i = 0; i < markers.value.length; i++) {
-    markers.value[i].remove();
+    markers.value[i].marker.remove();
   }
 };
 
@@ -100,16 +106,19 @@ const updateMarkers = () => {
 
   if (props.stations) {
     markers.value = props.stations.map((item) => {
-      return new mapboxgl.Marker({
-        element: stationMarker(item)
-      })
-        .setLngLat(item.location.coordinates);
+      return {
+        id: item.id,
+        marker: new mapboxgl.Marker({
+          element: stationMarker(item)
+        })
+          .setLngLat(item.location.coordinates)
+      };
     });
   }
 
   for (let i = 0; i < markers.value.length; i++) {
     if (mapRef.value) {
-      markers.value[i].addTo(mapRef.value);
+      markers.value[i].marker.addTo(mapRef.value);
     }
   }
 };
@@ -118,11 +127,26 @@ watch(() => props.stations, () => {
   updateMarkers();
 });
 
+watch(() => props.activeStation, (newVal, prevVal) => {
+  const id = newVal ? newVal : prevVal;
+  const markerObj = markers.value.find((item) => item.id === id);
+
+  markerObj?.marker._element.classList.toggle('active');
+
+});
+
 </script>
 
 <style>
-.custom-marker {
+.custom-marker.active {
+  z-index: 999999999;
+}
 
+.custom-marker.active .custom-marker_icon {
+  animation: bouncing 1s infinite;
+}
+.custom-marker.active .custom-marker_icon svg {
+  color: #3F9EFF;
 }
 
 .custom-marker .custom-marker_wrapper {
@@ -140,9 +164,6 @@ watch(() => props.stations, () => {
   left: -14px;
   width: 28px;
   height: 40px;
-}
-.custom-marker .custom-marker_icon.active {
-  animation: bouncing 1s infinite;
 }
 
 .custom-marker .custom-marker_icon svg {
@@ -177,7 +198,7 @@ watch(() => props.stations, () => {
   0% {
     transform: translate(0, 0);
   }
-  50%{
+  50% {
     transform: translate(0, -7px);
   }
   100% {

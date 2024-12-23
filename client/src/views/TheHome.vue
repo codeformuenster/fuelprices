@@ -5,12 +5,15 @@
       <div
         class="-translate-x-full ease-in fixed inset-y-0 left-0 z-30 w-96
         overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0">
-        <StationsList :data="stations"/>
+        <StationsList :data="stations" @onHover="setActiveStation"/>
       </div>
     </div>
     <div class="flex-1 flex flex-col overflow-hidden">
       <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-        <StationsMap :center="currentCity?.location.coordinates" :stations="stations"/>
+        <StationsMap :center="currentCity?.location.coordinates"
+                     :stations="stations"
+                     :activeStation="activeStation"
+        />
       </main>
     </div>
   </div>
@@ -29,6 +32,12 @@ const currentCity: Ref<undefined | City> = ref(undefined);
 const stations: Ref<Station[]> = ref([]);
 const isPending: Ref<true | false> = ref(true);
 const isPendingList: Ref<true | false> = ref(true);
+
+const activeStation = ref(null);
+
+const setActiveStation = (id:any) => {
+  activeStation.value = id;
+}
 
 const stationsList = async (cityId: string) => {
   isPendingList.value = true;

@@ -1,15 +1,18 @@
 <template>
   <nav class="p-4">
     <Card v-for="item in props.data"
-          class="mb-4 shadow-none hover:shadow-md cursor-pointer">
+          class="mb-4 shadow-none hover:shadow-md cursor-pointer"
+          @mouseenter="() => onStationHover(item.id)"
+          @mouseleave="() => onStationHover(null)"
+    >
       <CardHeader class="p-4">
         <CardTitle class="flex mb-2 text-xl">
           <span class="flex-1 me-4">{{ item.name }}</span>
 
           <div class="flex flex-col items-end ms-2">
-            <p class="text-xl font-semibold tracking-tight leading-none">{{ item.super.toString().slice(0, item.super.toString().length - 1) }}<span
-              class="text-sm inline-block align-top leading-none">{{ item.super.toString().slice(-1) }}</span></p>
-            <p class="w-full text-sm text-left text-green-500">{{ item.trend.super }}</p>
+            <p class="text-xl font-semibold tracking-tight leading-none">{{ item.e10.toString().slice(0, item.super.toString().length - 1) }}<span
+              class="text-sm inline-block align-top leading-none">{{ item.e10.toString().slice(-1) }}</span></p>
+            <p class="w-full text-sm text-left text-green-500">{{ item.trend.e10 }}</p>
           </div>
         </CardTitle>
         <CardDescription class="flex">
@@ -47,7 +50,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const emits = defineEmits(['onHover'])
 
+const onStationHover = (id:any) => {
+  console.log(id);
+  emits('onHover', id)
+}
 
 </script>
 

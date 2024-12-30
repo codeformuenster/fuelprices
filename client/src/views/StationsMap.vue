@@ -84,7 +84,7 @@ const stationMarker = (data: any) => {
 <div class="custom-marker_price">
 ${price.slice(0, price.length - 1)}
 <div class="custom-marker_price-cents">${price.slice(-1)}</div>
-<div class="custom-marker_price-trend">icon</div>
+<!--<div class="custom-marker_price-trend">icon</div>-->
 </div>
 </div>`;
 
@@ -188,10 +188,8 @@ watch(() => props.activeStation, (newVal, prevVal) => {
 .custom-marker .custom-marker_price .custom-marker_price-cents {
   position: relative;
   top: -2px;
-  left: 1px;
   font-size: 10px;
   margin-right: 8px;
-  font-weight: normal;
 }
 
 @keyframes bouncing {

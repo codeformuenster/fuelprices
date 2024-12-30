@@ -17,7 +17,6 @@
         </CardTitle>
         <CardDescription class="flex">
           <ul class="flex items-center w-full list-none">
-
             <li>
                   <span class="flex">
                     <svg class="me-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">

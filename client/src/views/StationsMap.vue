@@ -109,7 +109,8 @@ const updateMarkers = () => {
       return {
         id: item.id,
         marker: new mapboxgl.Marker({
-          element: stationMarker(item)
+          element: stationMarker(item),
+          anchor: 'bottom-left'
         })
           .setLngLat(item.location.coordinates)
       };

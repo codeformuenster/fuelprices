@@ -10,8 +10,10 @@
           <span class="flex-1 me-4">{{ item.name }}</span>
 
           <div class="flex flex-col items-end ms-2">
-            <p class="text-xl font-semibold tracking-tight leading-none">{{ item.e10.toString().slice(0, item.super.toString().length - 1) }}<span
-              class="text-sm inline-block align-top leading-none">{{ item.e10.toString().slice(-1) }}</span></p>
+            <p class="text-xl font-semibold tracking-tight leading-none">{{
+                item.e10.toString().slice(0, item.super.toString().length - 1)
+              }}<span
+                class="text-sm inline-block align-top leading-none">{{ item.e10.toString().slice(-1) }}</span></p>
             <p class="w-full text-sm text-left text-green-500">{{ item.trend.e10 }}</p>
           </div>
         </CardTitle>
@@ -29,7 +31,9 @@
 
             </li>
             <li class="ms-4">
-              <AddToFavoritesButton :stationId="item.id"/>
+              <AddToFavoritesButton :stationId="item.id"
+                                    :favorites="props.favorites"
+              />
             </li>
           </ul>
         </CardDescription>
@@ -39,22 +43,23 @@
 </template>
 
 <script setup lang="ts">
+import type { Station } from '@/types/models.ts';
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AddToFavoritesButton from '@/components/AddToFavoritesButton.vue';
-import type { Station } from '@/types/models.ts';
+
 
 interface Props {
   data: Station[];
+  favorites: string[];
 }
 
 const props = defineProps<Props>();
-const emits = defineEmits(['onHover'])
+const emits = defineEmits([ 'onHover' ]);
 
-const onStationHover = (id:any) => {
-  console.log(id);
-  emits('onHover', id)
-}
+const onStationHover = (id: any) => {
+  emits('onHover', id);
+};
 
 </script>
 

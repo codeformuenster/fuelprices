@@ -16,17 +16,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 import mapboxgl, { type LngLatLike } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type { Ref } from 'vue';
+
+import { symmetricArrayDiff } from '@/utils/array.ts';
+
+import type { Station } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import type { Station } from '@/types/models.ts';
+
 
 interface Props {
   center: number[];
   stations: Station[];
+  favorites: string[];
   activeStation: string;
 }
 
@@ -76,6 +80,12 @@ const stationMarker = (data: any) => {
 
   markerElement.className = 'custom-marker';
 
+  if (isFavorite(data.id)) {
+    markerElement.classList.add('favorite');
+  } else {
+    markerElement.classList.remove('favorite');
+  }
+
   const price = data[props.fuelType ? props.fuelType : 'e10'].toString();
 
   markerElement.innerHTML = `<div class="custom-marker_wrapper">
@@ -124,6 +134,16 @@ const updateMarkers = () => {
   }
 };
 
+const isFavorite = (id: string) => {
+  if (props?.favorites?.length > 0) {
+    if (props.favorites.some((item) => item === id)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 watch(() => props.stations, () => {
   updateMarkers();
 });
@@ -133,7 +153,18 @@ watch(() => props.activeStation, (newVal, prevVal) => {
   const markerObj = markers.value.find((item) => item.id === id);
 
   markerObj?.marker._element.classList.toggle('active');
+});
 
+watch(() => props.favorites, (newVal, prevVal = []) => {
+  const diff = symmetricArrayDiff(newVal, prevVal);
+
+  if (diff.length) {
+    for (let i = 0; i < diff.length; i++) {
+      const markerObj = markers.value.find((item) => item.id === diff[i]);
+
+      markerObj?.marker._element.classList.toggle('favorite');
+    }
+  }
 });
 
 </script>
@@ -143,11 +174,20 @@ watch(() => props.activeStation, (newVal, prevVal) => {
   z-index: 999999999;
 }
 
+.custom-marker.favorite {
+  z-index: 999999998;
+}
+
 .custom-marker.active .custom-marker_icon {
   animation: bouncing 1s infinite;
 }
+
 .custom-marker.active .custom-marker_icon svg {
-  color: #3F9EFF;
+  color: #3F9EFF !important;
+}
+
+.custom-marker.favorite .custom-marker_icon svg {
+  color: #ffa500;
 }
 
 .custom-marker .custom-marker_wrapper {

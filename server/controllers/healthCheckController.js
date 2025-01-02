@@ -1,6 +1,6 @@
 export const healthCheck = async (req, res) => {
   console.group('Request data:');
-  console.log('Request from down-time-resolver - ', new Date().toISOString());
+  console.log('Request to health check was at - ', new Date().toISOString());
 
   try {
     res.status(201).json({

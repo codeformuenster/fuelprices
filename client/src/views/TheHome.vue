@@ -20,7 +20,11 @@
                      :activeStation="activeStation"
         />
 
-        <RouterView/>
+        <router-view v-slot="{ Component }">
+          <transition name="slideUp">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </main>
     </div>
   </div>
@@ -104,7 +108,7 @@ onMounted(async () => {
   }
 });
 
-watch(() => router.currentRoute.value, (newVal, oldValue) => {
+watch(() => router.currentRoute.value, (newVal) => {
   if (newVal.params.id) {
     setActiveStation(newVal.params.id as string);
   }
@@ -112,6 +116,15 @@ watch(() => router.currentRoute.value, (newVal, oldValue) => {
 
 </script>
 
-<style scoped>
+<style>
+.slideUp-enter-active,
+.slideUp-leave-active {
+  transition: 0.2s ease-in-out;
+  transform: translateY(0);
+}
 
+.slideUp-enter-from,
+.slideUp-leave-to {
+  transform: translateY(200px);
+}
 </style>

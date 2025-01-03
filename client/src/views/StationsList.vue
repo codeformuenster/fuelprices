@@ -1,5 +1,5 @@
 <template>
-  <nav class="p-4">
+  <nav class="p-4 border-r">
     <Card v-for="item in props.data"
           class="mb-4 shadow-none hover:shadow-md cursor-pointer"
           @mouseenter="() => onStationHover(item.id)"

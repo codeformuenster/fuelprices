@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-1">
+  <div class="flex flex-col flex-1 ease-in-out duration-200">
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
@@ -185,7 +185,7 @@ watch(() => props.favorites, (newVal, prevVal = []) => {
 watch(() => props.activeStation, async (newVal, prevVal) => {
   if (newVal && !prevVal) {
     // TODO: need to wait until map container finish calculating height;
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       setTimeout(() => {
         mapRef?.value?.resize();
         resolve(true);
@@ -222,7 +222,7 @@ watch(() => props.activeStation, async (newVal, prevVal) => {
   z-index: 999999998;
 }
 
-.custom-marker.active .custom-marker_icon {
+.custom-marker.active .custom-marker_icon, .custom-marker.highlighted .custom-marker_icon {
   animation: bouncing 1s infinite;
 }
 

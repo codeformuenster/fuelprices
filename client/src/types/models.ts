@@ -34,3 +34,16 @@ export interface Station {
 }
 
 export type StationId = Station['id'];
+
+export interface Price {
+  id: string,
+  e10: number,
+  super: number,
+  diesel: number,
+  updatedAt: Date,
+  trend: {
+    e10: null | string,
+    super: null | string,
+    diesel: null | string,
+  }
+}

@@ -7,32 +7,36 @@
         overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0">
         <StationsList :data="stations"
                       :favorites="favoritesList"
-                      @onHover="setActiveStation"
+                      @onHover="setHighlightedStation"
         />
       </div>
     </div>
     <div class="flex-1 flex flex-col overflow-hidden">
-      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-        <StationsMap :center="currentCity?.location.coordinates"
+      <main class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+        <StationsMap :center="currentCenter"
                      :stations="stations"
                      :favorites="favoritesList"
+                     :highlightedStation="highlightedStationId"
                      :activeStation="activeStation"
         />
+
+        <RouterView/>
       </main>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref } from 'vue';
+import { onMounted, type Ref, ref, watch } from 'vue';
 
 import StationsList from '@/views/StationsList.vue';
 import StationsMap from '@/views/StationsMap.vue';
 
-import type { City, Station } from '@/types/models.ts';
+import type { City, Station, StationId } from '@/types/models.ts';
 
 import { getCities, getStationsList } from '@/api/services/mainService.ts';
 import useFavorites from '@/composable/useFavorites.ts';
+import { useRoute, useRouter } from 'vue-router';
 
 
 const currentCity: Ref<undefined | City> = ref(undefined);
@@ -40,12 +44,26 @@ const stations: Ref<Station[]> = ref([]);
 const isPending: Ref<true | false> = ref(true);
 const isPendingList: Ref<true | false> = ref(true);
 
-const activeStation = ref(null);
+const activeStation: Ref<Station | null> = ref(null);
+const highlightedStationId: Ref<StationId> = ref('');
 
 const {favoritesList} = useFavorites();
 
-const setActiveStation = (id: any) => {
-  activeStation.value = id;
+const currentCenter = ref();
+
+const router = useRouter();
+const route = useRoute();
+
+const setActiveStation = (id: StationId) => {
+  const station = stations.value.find((item) => item.id === id);
+  if (station) {
+    activeStation.value = station;
+  }
+};
+const setHighlightedStation = (id: StationId) => {
+  if (activeStation?.value?.id !== id) {
+    highlightedStationId.value = id;
+  }
 };
 
 const stationsList = async (cityId: string) => {
@@ -54,6 +72,10 @@ const stationsList = async (cityId: string) => {
   try {
     const result = await getStationsList({cityId: cityId});
     stations.value = result.data;
+
+    if (route.params.id) {
+      setActiveStation(route.params.id as string);
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -69,6 +91,7 @@ onMounted(async () => {
 
     if (cities.data) {
       currentCity.value = cities.data.find(({name}) => name === 'Münster');
+      currentCenter.value = currentCity?.value?.location.coordinates;
 
       if (currentCity.value) {
         await stationsList(currentCity.value.id);
@@ -81,6 +104,11 @@ onMounted(async () => {
   }
 });
 
+watch(() => router.currentRoute.value, (newVal, oldValue) => {
+  if (newVal.params.id) {
+    setActiveStation(newVal.params.id as string);
+  }
+});
 
 </script>
 

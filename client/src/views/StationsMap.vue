@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-full">
+  <div class="flex flex-col flex-1">
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
@@ -22,16 +22,17 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { symmetricArrayDiff } from '@/utils/array.ts';
 
-import type { Station } from '@/types/models.ts';
+import type { Station, StationId } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
 
 
 interface Props {
-  center: number[];
+  center: LngLatLike;
   stations: Station[];
-  favorites: string[];
-  activeStation: string;
+  favorites: StationId[];
+  activeStation: Station;
+  highlightedStation: StationId;
 }
 
 interface Markers {
@@ -46,24 +47,28 @@ const mapContainerRef: Ref<string | HTMLElement> = ref('');
 const isPending: Ref<Boolean> = ref(true);
 const markers: Ref<Markers[]> = ref([]);
 
+const defaultZoom = 10;
+
 const initMapBox = (center?: LngLatLike) => {
   mapboxgl.accessToken = 'pk.eyJ1IjoibWlsay0yLWRldiIsImEiOiJjbTNmdzdjeGkwMDh6MnFzOGsxaDRibGxyIn0.qfDvVCwBAFD1lMbOT4O9Xw';
 
-  mapRef.value = new mapboxgl.Map({
-    container: mapContainerRef.value,
-    center,
-    zoom: 10
+  setTimeout(() => {
+    mapRef.value = new mapboxgl.Map({
+      container: mapContainerRef.value,
+      center,
+      zoom: defaultZoom
+    });
   });
 };
 
 watch(() => props.center, () => {
   if (mapRef.value) {
     mapRef.value.flyTo({
-      center: [ props.center[1], props.center[0] ],
-      zoom: 10
+      center: props.center,
+      zoom: defaultZoom
     });
   } else {
-    initMapBox([ props.center[1], props.center[0] ]);
+    initMapBox(props.center);
 
     isPending.value = false;
   }
@@ -134,6 +139,18 @@ const updateMarkers = () => {
   }
 };
 
+const toggleHighlightedStation = (id: StationId) => {
+  const markerObj = markers.value.find((item) => item.id === id);
+
+  markerObj?.marker._element.classList.toggle('highlighted');
+};
+
+const toggleActiveStation = (id: StationId) => {
+  const markerObj = markers.value.find((item) => item.id === id);
+
+  markerObj?.marker._element.classList.toggle('active');
+};
+
 const isFavorite = (id: string) => {
   if (props?.favorites?.length > 0) {
     if (props.favorites.some((item) => item === id)) {
@@ -148,11 +165,9 @@ watch(() => props.stations, () => {
   updateMarkers();
 });
 
-watch(() => props.activeStation, (newVal, prevVal) => {
+watch(() => props.highlightedStation, (newVal, prevVal) => {
   const id = newVal ? newVal : prevVal;
-  const markerObj = markers.value.find((item) => item.id === id);
-
-  markerObj?.marker._element.classList.toggle('active');
+  toggleHighlightedStation(id);
 });
 
 watch(() => props.favorites, (newVal, prevVal = []) => {
@@ -167,10 +182,39 @@ watch(() => props.favorites, (newVal, prevVal = []) => {
   }
 });
 
+watch(() => props.activeStation, async (newVal, prevVal) => {
+  if (newVal && !prevVal) {
+    // TODO: need to wait until map container finish calculating height;
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        mapRef?.value?.resize();
+        resolve(true);
+      });
+    });
+  }
+
+  if (newVal) {
+    mapRef?.value?.flyTo({
+      center: newVal.location.coordinates,
+      zoom: 15
+    });
+  } else {
+    mapRef?.value?.flyTo({
+      zoom: defaultZoom
+    });
+  }
+
+  if (prevVal) {
+    toggleActiveStation(prevVal.id);
+  }
+
+  toggleActiveStation(newVal.id);
+});
+
 </script>
 
 <style>
-.custom-marker.active {
+.custom-marker.active, .custom-marker.highlighted {
   z-index: 999999999;
 }
 
@@ -182,8 +226,12 @@ watch(() => props.favorites, (newVal, prevVal = []) => {
   animation: bouncing 1s infinite;
 }
 
-.custom-marker.active .custom-marker_icon svg {
+.custom-marker.highlighted .custom-marker_icon svg {
   color: #3F9EFF !important;
+}
+
+.custom-marker.active .custom-marker_icon svg {
+  color: #009688 !important;
 }
 
 .custom-marker.favorite .custom-marker_icon svg {

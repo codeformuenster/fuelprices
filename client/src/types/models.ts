@@ -19,7 +19,7 @@ export interface Station {
   city: City,
   location: {
     type: 'Point'
-    coordinates:  mapboxgl.LngLatLike
+    coordinates: mapboxgl.LngLatLike
   },
   marketTransparencyId: string,
   super: number,
@@ -32,3 +32,5 @@ export interface Station {
     diesel: Trend,
   }
 }
+
+export type StationId = Station['id'];

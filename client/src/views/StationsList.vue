@@ -7,7 +7,9 @@
     >
       <CardHeader class="p-4">
         <CardTitle class="flex mb-2 text-xl">
-          <span class="flex-1 me-4">{{ item.name }}</span>
+          <RouterLink :to="`/${item.id}`" class="flex-1 me-4">
+            {{ item.name }}
+          </RouterLink>
 
           <div class="flex flex-col items-end ms-2">
             <p class="text-xl font-semibold tracking-tight leading-none">{{

@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, type Ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import type { Price } from '@/types/models.ts';
 
@@ -35,29 +35,28 @@ import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
 import { Skeleton } from '@/components/ui/skeleton';
 
 
+const router = useRouter();
 const route = useRoute();
 
 const isOpen: Ref<boolean> = ref(false);
 const pricesList: Ref<Price[]> = ref([]);
 const isPending: Ref<boolean> = ref(true);
 
+watch(() => router.currentRoute.value, async (newVal) => {
+  if (newVal.params.id) {
+    isPending.value = true;
 
-onMounted(async () => {
-  // setTimeout(() => {
-  //   isOpen.value = true
-  // }, 300)
-  isPending.value = true;
+    try {
+      const result = await getPrices(route.params.id as string);
+      pricesList.value = result.data;
 
-  try {
-    const result = await getPrices(route.params.id as string);
-    pricesList.value = result.data;
-
-  } catch (error) {
-    console.log(error);
-  } finally {
-    // isPending.value = false;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isPending.value = false;
+    }
   }
-});
+}, {immediate: true});
 </script>
 
 <style>

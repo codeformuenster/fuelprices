@@ -50,7 +50,7 @@ export const getStationsList = async (req, res) => {
             super: {$first: '$prices.super'},
             e10: {$first: '$prices.e10'},
             diesel: {$first: '$prices.diesel'},
-            updatedAt: {$first: '$prices.updatedAt'},
+            latestPriceUpdatedAt: {$first: '$prices.updatedAt'},
             trend: {$first: '$prices.trend'}
           }
         },

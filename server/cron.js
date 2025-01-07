@@ -13,13 +13,24 @@ const isEqualZero = (newPrices) => {
 };
 
 const calcTrend = (currentPrice, newPrice) => {
-  if (Math.abs(newPrice - currentPrice) < tolerance) {
-    return '';
-  } else if (newPrice > currentPrice) {
-    return 'up';
-  } else {
-    return 'down';
+  const result = {
+    status: '',
+    value: 0.00
+  };
+
+  const diff = Math.abs(newPrice - currentPrice);
+
+  if (diff > tolerance) {
+    if (newPrice > currentPrice) {
+      result.status = 'up';
+      result.value = diff;
+    } else {
+      result.status = 'down';
+      result.value = diff;
+    }
   }
+
+  return result;
 };
 
 export const fetchAndSavePrice = async () => {

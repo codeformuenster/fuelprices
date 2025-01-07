@@ -10,7 +10,10 @@ export interface City {
   };
 }
 
-type Trend = null | 'up' | 'down';
+export type Trend = {
+  status: '' | 'up' | 'down',
+  value: number
+};
 
 export interface Station {
   id: string,

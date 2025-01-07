@@ -11,9 +11,9 @@
           <div class="flex flex-col items-end ms-2">
             <p class="text-xl font-semibold tracking-tight leading-none">
               {{
-                props.price.toString().slice(0, props.price.toString().length - 1)
+                priceValue
               }}<span class="text-sm inline-block align-top leading-none">
-                {{ props.price.toString().slice(-1) }}
+                {{ priceValueCents }}
               </span>
             </p>
           </div>
@@ -27,8 +27,10 @@
             Trend
           </p>
         </div>
-        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-          {{ props?.trend }}
+        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+             :class="props.trend?.status ? trendClass[props.trend?.status] : null"
+        >
+          {{ props?.trend?.value }}
         </div>
       </div>
     </li>
@@ -60,18 +62,31 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
+import { trendClass } from '@/utils/html.ts';
+
+import type { Trend } from '@/types/models.ts';
+
 
 interface Props {
   price: string,
-  trend: {
-    status: string,
-    value: string
-  } | null,
+  trend: Trend,
   updatedAt: Date,
   address: string
 }
 
 const props = defineProps<Props>();
+
+const priceValue = computed(() => {
+  return props?.price?.toString().slice(0, props?.price?.toString().length - 1);
+});
+
+const priceValueCents = computed(() => {
+  return props?.price?.toString().slice(-1);
+});
+
+
 </script>
 
 <style scoped>

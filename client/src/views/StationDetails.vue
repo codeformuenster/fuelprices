@@ -27,7 +27,7 @@
 
       <div class="grid gap-4 py-4">
         <StationInfoList :address="props?.activeStation?.address"
-                         :trend="props?.activeStation?.trend"
+                         :trend="props?.activeStation?.trend.e10"
                          :price="props?.activeStation?.e10"
                          :updatedAt="props?.activeStation?.latestPriceUpdatedAt"
         />

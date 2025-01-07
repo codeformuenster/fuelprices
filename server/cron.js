@@ -18,7 +18,7 @@ const calcTrend = (currentPrice, newPrice) => {
     value: 0.00
   };
 
-  const diff = Math.abs(newPrice - currentPrice);
+  const diff = Math.abs(newPrice - currentPrice).toFixed(2);
 
   if (diff > tolerance) {
     if (newPrice > currentPrice) {

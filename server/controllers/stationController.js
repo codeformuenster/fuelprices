@@ -34,10 +34,14 @@ export const getStationsList = async (req, res) => {
             as: 'prices'
           }
         },
-        {$unwind: '$prices'},
+        {
+          $unwind: {
+            path: '$prices',
+          }
+        },
         {
           $sort: {
-            'prices.updateAt': -1
+            'prices.updatedAt': -1
           }
         },
         {

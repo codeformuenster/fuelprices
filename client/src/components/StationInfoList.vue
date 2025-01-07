@@ -24,7 +24,8 @@
         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
           <TrendValue
             class="w-full text-sm text-left"
-            :trend="props?.trend"
+            :trend="props.trend"
+            :placeholder="true"
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <p v-if="trend?.status"
+  <p v-if="trend?.status || placeholder"
      :class="trendClass[trend.status]"
   >
     {{ trendDirection }} {{ trend.value }}
@@ -16,12 +16,19 @@ import type { Trend } from '@/types/models.ts';
 
 interface Props {
   trend: Trend;
+  placeholder: Boolean
 }
 
 const props = defineProps<Props>();
 
 const trendDirection = computed(() => {
-  return props?.trend?.status === 'up' ? '+' : '-';
+  if(props?.trend?.status === 'up'){
+    return '+'
+  }
+
+  if(props?.trend?.status === 'down'){
+    return '-'
+  }
 });
 
 </script>

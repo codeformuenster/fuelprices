@@ -9,13 +9,7 @@
         </div>
         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
           <div class="flex flex-col items-end ms-2">
-            <p class="text-xl font-semibold tracking-tight leading-none">
-              {{
-                priceValue
-              }}<span class="text-sm inline-block align-top leading-none">
-                {{ priceValueCents }}
-              </span>
-            </p>
+            <PriceValue :price="props?.price"/>
           </div>
         </div>
       </div>
@@ -27,10 +21,11 @@
             Trend
           </p>
         </div>
-        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-             :class="props.trend?.status ? trendClass[props.trend?.status] : null"
-        >
-          {{ props?.trend?.value }}
+        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+          <TrendValue
+            class="w-full text-sm text-left"
+            :trend="props?.trend"
+          />
         </div>
       </div>
     </li>
@@ -62,11 +57,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import { trendClass } from '@/utils/html.ts';
-
 import type { Trend } from '@/types/models.ts';
+
+import PriceValue from '@/components/PriceValue.vue';
+import TrendValue from '@/components/TrendValue.vue';
 
 
 interface Props {
@@ -77,14 +71,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-const priceValue = computed(() => {
-  return props?.price?.toString().slice(0, props?.price?.toString().length - 1);
-});
-
-const priceValueCents = computed(() => {
-  return props?.price?.toString().slice(-1);
-});
 
 
 </script>

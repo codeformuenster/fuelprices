@@ -12,13 +12,11 @@
           </RouterLink>
 
           <div class="flex flex-col items-end ms-2">
-            <p class="text-xl font-semibold tracking-tight leading-none">{{
-                item.e10.toString().slice(0, item.super.toString().length - 1)
-              }}<span
-                class="text-sm inline-block align-top leading-none">{{ item.e10.toString().slice(-1) }}</span></p>
-            <p class="w-full text-sm text-left text-green-500"
-               :class="item.trend.e10?.status ? trendClass[item.trend.e10?.status] : null"
-            >{{ item.trend.e10?.value }}</p>
+            <PriceValue :price="item.e10"/>
+            <TrendValue
+              class="w-full text-sm text-left"
+              :trend="item.trend.e10"
+            />
           </div>
         </CardTitle>
         <CardDescription class="flex">
@@ -51,7 +49,8 @@ import type { Station } from '@/types/models.ts';
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AddToFavoritesButton from '@/components/AddToFavoritesButton.vue';
-import { trendClass } from '@/utils/html.ts';
+import TrendValue from '@/components/TrendValue.vue';
+import PriceValue from '@/components/PriceValue.vue';
 
 
 interface Props {

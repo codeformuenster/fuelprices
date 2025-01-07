@@ -22,7 +22,10 @@
 
         <router-view v-slot="{ Component }">
           <transition name="slideUp">
-            <component :is="Component" />
+            <component :is="Component"
+                       :activeStation="activeStation"
+                       :favorites="favoritesList"
+            />
           </transition>
         </router-view>
       </main>

@@ -13,7 +13,8 @@
     </div>
     <div class="flex-1 flex flex-col overflow-hidden">
       <main class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-        <StationsMap :center="currentCenter"
+        <StationsMap ref="stationsMap"
+                     :center="currentCenter"
                      :stations="stations"
                      :favorites="favoritesList"
                      :highlightedStation="highlightedStationId"
@@ -46,6 +47,7 @@ import useFavorites from '@/composable/useFavorites.ts';
 import { useRoute, useRouter } from 'vue-router';
 
 
+const stationsMap = ref(null);
 const currentCity: Ref<undefined | City> = ref(undefined);
 const stations: Ref<Station[]> = ref([]);
 const isPending: Ref<true | false> = ref(true);
@@ -114,20 +116,23 @@ onMounted(async () => {
 watch(() => router.currentRoute.value, (newVal) => {
   if (newVal.params.id) {
     setActiveStation(newVal.params.id as string);
+  } else {
+    activeStation.value = null;
   }
 });
 
 </script>
 
 <style>
-.slideUp-enter-active,
-.slideUp-leave-active {
-  transition: 0.2s ease-in-out;
+.slideUp-enter-active{
   transform: translateY(0);
 }
 
-.slideUp-enter-from,
-.slideUp-leave-to {
-  transform: translateY(200px);
+.slideUp-enter-from {
+  transform: translateY(75%);
+}
+
+.slideUp-leave-from, .slideUp-leave-active {
+  transform: translateY(0);
 }
 </style>

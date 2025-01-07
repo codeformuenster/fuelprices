@@ -5,11 +5,12 @@
     <div v-if="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
-      <Skeleton class="h-[125px] w-[250px] rounded-xl"/>
-      <div class="space-y-2">
-        <Skeleton class="h-4 w-[250px]"/>
-        <Skeleton class="h-4 w-[200px]"/>
-      </div>
+<!--      TODO:// Need to create another preloader, because this one make my eyes crying-->
+<!--      <Skeleton class="h-[125px] w-[250px] rounded-xl"/>-->
+<!--      <div class="space-y-2">-->
+<!--        <Skeleton class="h-4 w-[250px]"/>-->
+<!--        <Skeleton class="h-4 w-[200px]"/>-->
+<!--      </div>-->
     </div>
     <div v-slse>
       <div class="flex flex-col gap-y-1.5 text-center sm:text-left">
@@ -35,7 +36,9 @@
 
       <Button variant="ghost"
               size="icon"
-              class="flex items-center absolute right-4 top-2 opacity-70 transition-opacity hover:opacity-100">
+              class="flex items-center absolute right-4 top-2 opacity-70 transition-opacity hover:opacity-100"
+              @click="handleClickClose"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
           <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
           <path
@@ -70,10 +73,12 @@ const route = useRoute();
 
 const props = defineProps<Props>();
 
-const isOpen: Ref<boolean> = ref(false);
 const pricesList: Ref<Price[]> = ref([]);
 const isPending: Ref<boolean> = ref(true);
 
+const handleClickClose = () => {
+  router.push('/')
+}
 
 watch(() => router.currentRoute.value, async (newVal) => {
   if (newVal.params.id) {

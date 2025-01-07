@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col flex-1 ease-in-out duration-200">
+  <div class="flex ease-in-out duration-200"
+       :class="activeStation ? 'h-[25%]' : 'h-full'"
+  >
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
@@ -184,13 +186,7 @@ watch(() => props.favorites, (newVal, prevVal = []) => {
 
 watch(() => props.activeStation, async (newVal, prevVal) => {
   if (newVal && !prevVal) {
-    // TODO: need to wait until map container finish calculating height;
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        mapRef?.value?.resize();
-        resolve(true);
-      });
-    });
+    await resizeMap();
   }
 
   if (newVal) {
@@ -198,7 +194,12 @@ watch(() => props.activeStation, async (newVal, prevVal) => {
       center: newVal.location.coordinates,
       zoom: 15
     });
+
+    toggleActiveStation(newVal.id);
+
   } else {
+    await resizeMap();
+
     mapRef?.value?.flyTo({
       zoom: defaultZoom
     });
@@ -207,8 +208,20 @@ watch(() => props.activeStation, async (newVal, prevVal) => {
   if (prevVal) {
     toggleActiveStation(prevVal.id);
   }
+});
 
-  toggleActiveStation(newVal.id);
+const resizeMap = async () => {
+  // TODO: need to wait until map container finish calculating height;
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      mapRef?.value?.resize();
+      resolve(true);
+    }, 250);
+  });
+};
+
+defineExpose({
+  resizeMap
 });
 
 </script>

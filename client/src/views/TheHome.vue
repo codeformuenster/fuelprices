@@ -7,6 +7,7 @@
         overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0">
         <StationsList :data="stations"
                       :favorites="favoritesList"
+                      :activeStation="activeStation"
                       @onHover="setHighlightedStation"
         />
       </div>

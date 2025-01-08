@@ -2,6 +2,7 @@
   <nav class="p-4 border-r">
     <Card v-for="item in props.data"
           class="mb-4 shadow-none hover:shadow-md cursor-pointer"
+          :class="item.id === activeStation?.id ? 'shadow-md' : null"
           @mouseenter="() => onStationHover(item.id)"
           @mouseleave="() => onStationHover(null)"
     >
@@ -56,6 +57,7 @@ import PriceValue from '@/components/PriceValue.vue';
 interface Props {
   data: Station[];
   favorites: string[];
+  activeStation: Station;
 }
 
 const props = defineProps<Props>();

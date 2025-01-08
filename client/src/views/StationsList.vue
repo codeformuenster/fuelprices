@@ -2,7 +2,7 @@
   <nav class="p-4 border-r">
     <Card v-for="item in props.data"
           class="mb-4 shadow-none hover:shadow-md cursor-pointer"
-          :class="item.id === activeStation?.id ? 'shadow-md' : null"
+          :class="item.id === activeStation?.id ? 'shadow-md border-teal-600' : null"
           @mouseenter="() => onStationHover(item.id)"
           @mouseleave="() => onStationHover(null)"
     >

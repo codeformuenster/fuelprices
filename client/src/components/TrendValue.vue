@@ -1,8 +1,8 @@
 <template>
   <p v-if="trend?.status || placeholder"
-     :class="trendClass[trend.status]"
+     :class="trendClass[trend?.status]"
   >
-    {{ trendDirection }} {{ trend.value }}
+    {{ trendDirection }} {{ trend?.value }}
   </p>
 </template>
 

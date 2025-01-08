@@ -22,8 +22,6 @@
                                 :favorites="props?.favorites"
           />
         </h2>
-        <p id="radix-vue-dialog-description-v-25-2" class="text-sm text-muted-foreground"> Make changes to your profile
-          here. Click save when you're done. </p>
       </div>
 
       <div class="grid gap-4 py-4">
@@ -32,6 +30,8 @@
                          :price="props?.activeStation?.e10"
                          :updatedAt="props?.activeStation?.latestPriceUpdatedAt"
         />
+
+        <StationDetailsPricesHistory/>
       </div>
 
       <Button variant="ghost"
@@ -51,17 +51,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-import type { Price, Station, StationId } from '@/types/models.ts';
-
-import { getPrices } from '@/api/services/mainService.ts';
+import type { Station, StationId } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import AddToFavoritesButton from '@/components/AddToFavoritesButton.vue';
 import StationInfoList from '@/components/StationInfoList.vue';
+import StationDetailsPricesHistory from '@/components/StationDetailsPricesHistory.vue';
 
 interface Props {
   activeStation: Station;
@@ -69,32 +67,12 @@ interface Props {
 }
 
 const router = useRouter();
-const route = useRoute();
 
 const props = defineProps<Props>();
-
-const pricesList: Ref<Price[]> = ref([]);
-const isPending: Ref<boolean> = ref(true);
 
 const handleClickClose = () => {
   router.push('/')
 }
-
-watch(() => router.currentRoute.value, async (newVal) => {
-  if (newVal.params.id) {
-    isPending.value = true;
-
-    try {
-      const result = await getPrices(route.params.id as string);
-      pricesList.value = result.data;
-
-    } catch (error) {
-      console.log(error);
-    } finally {
-      isPending.value = false;
-    }
-  }
-}, {immediate: true});
 </script>
 
 <style>

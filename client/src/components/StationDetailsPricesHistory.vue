@@ -36,14 +36,16 @@ import {
 import { computed, ref, type Ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Line } from 'vue-chartjs';
+import type { DateRange } from 'radix-vue';
+import { CalendarDate } from '@internationalized/date';
 
 import type { Price } from '@/types/models.ts';
 import { type Point, verticalLinePlugin } from '@/plugins/chartjs.ts';
 
+import useLocalStorage from '@/composable/useLocalStorage.ts';
+
 import { getPrices } from '@/api/services/mainService.ts';
 import CalendarRange from '@/components/CalendarRange.vue';
-import { CalendarDate } from '@internationalized/date';
-import type { DateRange } from 'radix-vue';
 
 
 ChartJS.register(
@@ -95,6 +97,8 @@ const options: CustomChartOptions = {
 const router = useRouter();
 const route = useRoute();
 
+const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
+
 const mainView = ref(null);
 
 const currentDate = new Date();
@@ -112,9 +116,17 @@ const chartData = computed(() => {
   options.lineAtIndex = [];
 
   const labels: string[] = [];
-  const typeE10 = [];
-  const typeSuper = [];
-  const typeDiesel = [];
+
+  type PricesCollector = {
+    e10: number[],
+    super: number[],
+    diesel: number[],
+  }
+  const prices:PricesCollector = {
+    e10: [],
+    super: [],
+    diesel: [],
+  }
 
   if (pricesList.value.length > 0) {
     for (let i = 0; i < pricesList.value.length; i++) {
@@ -135,21 +147,21 @@ const chartData = computed(() => {
         new Date(pricesList.value[i].updatedAt).toLocaleString()
       );
 
-      typeE10.push(pricesList.value[i].e10);
-      typeSuper.push(pricesList.value[i].super);
-      typeDiesel.push(pricesList.value[i].diesel);
+      prices.e10.push(pricesList.value[i].e10);
+      prices.super.push(pricesList.value[i].super);
+      prices.diesel.push(pricesList.value[i].diesel);
     }
   }
 
   const datasets = [
     {
-      label: 'E10',
+      label: '',
       backgroundColor: '#2b80ba',
       borderColor: '#37a2eb',
       fill: false,
       cubicInterpolationMode: 'monotone',
       tension: 0.1,
-      data: typeE10
+      data: prices[storage.value as keyof PricesCollector]
     },
   ];
 

@@ -1,7 +1,9 @@
 <template>
-  <div class="flex ease-in-out duration-200"
+  <div class="flex ease-in-out duration-200 relative"
        :class="activeStation ? 'h-[25%]' : 'h-full'"
   >
+    <StationsControllPanel/>
+
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
@@ -27,6 +29,8 @@ import { symmetricArrayDiff } from '@/utils/array.ts';
 import type { Station, StationId } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import StationsControllPanel from '@/views/StationsControlPanel.vue';
+import useLocalStorage from '@/composable/useLocalStorage.ts';
 
 
 interface Props {
@@ -35,6 +39,7 @@ interface Props {
   favorites: StationId[];
   activeStation: Station;
   highlightedStation: StationId;
+  fuelType: string;
 }
 
 interface Markers {
@@ -43,6 +48,8 @@ interface Markers {
 }
 
 const props = defineProps<Props>();
+
+const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
 const mapRef: Ref<null | mapboxgl.Map> = ref(null);
 const mapContainerRef: Ref<string | HTMLElement> = ref('');
@@ -93,7 +100,7 @@ const stationMarker = (data: any) => {
     markerElement.classList.remove('favorite');
   }
 
-  const price = data[props.fuelType ? props.fuelType : 'e10'].toString();
+  const price = data[storage.value].toString();
 
   markerElement.innerHTML = `<div class="custom-marker_wrapper">
 <div class="custom-marker_icon">${icon}</div>
@@ -164,6 +171,10 @@ const isFavorite = (id: string) => {
 };
 
 watch(() => props.stations, () => {
+  updateMarkers();
+});
+
+watch(storage, () => {
   updateMarkers();
 });
 

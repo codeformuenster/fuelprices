@@ -13,10 +13,10 @@
           </RouterLink>
 
           <div class="flex flex-col items-end ms-2">
-            <PriceValue :price="item.e10"/>
+            <PriceValue :price="item[fuelType as keyof Station]"/>
             <TrendValue
               class="w-full text-sm text-left"
-              :trend="item.trend.e10"
+              :trend="item.trend[fuelType as keyof Station['trend']]"
             />
           </div>
         </CardTitle>
@@ -58,6 +58,7 @@ interface Props {
   data: Station[];
   favorites: string[];
   activeStation: Station;
+  fuelType: string
 }
 
 const props = defineProps<Props>();

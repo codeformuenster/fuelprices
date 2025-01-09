@@ -26,8 +26,8 @@
 
       <div class="grid gap-6 py-4">
         <StationInfoList :address="props?.activeStation?.address"
-                         :trend="props?.activeStation?.trend.e10"
-                         :price="props?.activeStation?.e10"
+                         :trend="props?.activeStation?.trend[storage as keyof Station['trend']]"
+                         :price="props?.activeStation[storage as keyof Station]"
                          :updatedAt="props?.activeStation?.latestPriceUpdatedAt"
         />
 
@@ -60,6 +60,8 @@ import { Button } from '@/components/ui/button';
 import AddToFavoritesButton from '@/components/AddToFavoritesButton.vue';
 import StationInfoList from '@/components/StationInfoList.vue';
 import StationDetailsPricesHistory from '@/components/StationDetailsPricesHistory.vue';
+import type { Ref } from 'vue';
+import useLocalStorage from '@/composable/useLocalStorage.ts';
 
 interface Props {
   activeStation: Station;
@@ -67,6 +69,7 @@ interface Props {
 }
 
 const router = useRouter();
+const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
 const props = defineProps<Props>();
 

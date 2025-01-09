@@ -28,15 +28,12 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
 import { type Ref, ref, watchEffect } from 'vue';
-import useFuelType from '@/composable/useFuelType.ts';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
 
-// const {currentType, setType} = useFuelType();
 const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
 const fuelType = ref(storage.value);

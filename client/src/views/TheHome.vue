@@ -8,6 +8,7 @@
         <StationsList :data="stations"
                       :favorites="favoritesList"
                       :activeStation="activeStation"
+                      :fuelType="storage"
                       @onHover="setHighlightedStation"
         />
       </div>
@@ -37,15 +38,17 @@
 
 <script setup lang="ts">
 import { onMounted, type Ref, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import StationsList from '@/views/StationsList.vue';
 import StationsMap from '@/views/StationsMap.vue';
 
 import type { City, Station, StationId } from '@/types/models.ts';
 
-import { getCities, getStationsList } from '@/api/services/mainService.ts';
 import useFavorites from '@/composable/useFavorites.ts';
-import { useRoute, useRouter } from 'vue-router';
+import useLocalStorage from '@/composable/useLocalStorage.ts';
+
+import { getCities, getStationsList } from '@/api/services/mainService.ts';
 
 
 const stationsMap = ref(null);
@@ -58,6 +61,8 @@ const activeStation: Ref<Station | null> = ref(null);
 const highlightedStationId: Ref<StationId> = ref('');
 
 const {favoritesList} = useFavorites();
+const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
+
 
 const currentCenter = ref();
 
@@ -125,7 +130,7 @@ watch(() => router.currentRoute.value, (newVal) => {
 </script>
 
 <style>
-.slideUp-enter-active{
+.slideUp-enter-active {
   transform: translateY(0);
 }
 

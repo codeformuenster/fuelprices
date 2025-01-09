@@ -18,6 +18,8 @@
         </SelectGroup>
       </SelectContent>
     </Select>
+
+    <ShowFavoritesButton class="ms-3"/>
   </div>
 </template>
 
@@ -33,6 +35,7 @@ import {
 } from '@/components/ui/select';
 import { type Ref, ref, watchEffect } from 'vue';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
+import ShowFavoritesButton from '@/components/ShowFavoritesButton.vue';
 
 const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 

@@ -5,7 +5,7 @@
       <div
         class="-translate-x-full ease-in fixed inset-y-0 left-0 z-30 w-96
         overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0">
-        <StationsList :data="stations"
+        <StationsList :data="filteredStations"
                       :favorites="favoritesList"
                       :activeStation="activeStation"
                       :fuelType="storage"
@@ -17,7 +17,7 @@
       <main class="flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
         <StationsMap ref="stationsMap"
                      :center="currentCenter"
-                     :stations="stations"
+                     :stations="filteredStations"
                      :favorites="favoritesList"
                      :highlightedStation="highlightedStationId"
                      :activeStation="activeStation"
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref, watch } from 'vue';
+import { computed, onMounted, type Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import StationsList from '@/views/StationsList.vue';
@@ -62,7 +62,7 @@ const highlightedStationId: Ref<StationId> = ref('');
 
 const {favoritesList} = useFavorites();
 const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
-
+const {storage: showOnlyFavorites}: { storage: Ref<boolean> } = useLocalStorage('showOnlyFavorites', false);
 
 const currentCenter = ref();
 
@@ -97,6 +97,14 @@ const stationsList = async (cityId: string) => {
     isPendingList.value = false;
   }
 };
+
+const filteredStations = computed(() => {
+  return showOnlyFavorites.value
+    ? stations.value.filter((station) => {
+      return favoritesList.value.some((item) => item === station.id);
+    })
+    : stations.value;
+});
 
 onMounted(async () => {
   isPending.value = true;

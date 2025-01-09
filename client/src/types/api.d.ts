@@ -19,3 +19,8 @@ export interface PricesListResponse extends ApiResponse<Price[]> {
 export interface StationsListQueries {
   cityId: string;
 }
+
+export interface PricesListQueries {
+  startDay: string;
+  endDay: string;
+}

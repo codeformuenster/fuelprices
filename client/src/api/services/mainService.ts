@@ -1,4 +1,10 @@
-import type { CitiesListResponse, PricesListResponse, StationsListQueries, StationsListResponse } from '@/types/api';
+import type {
+  CitiesListResponse,
+  PricesListQueries,
+  PricesListResponse,
+  StationsListQueries,
+  StationsListResponse
+} from '@/types/api';
 import type { StationId } from '@/types/models.ts';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -15,8 +21,8 @@ export const getStationsList = async (queries: StationsListQueries): Promise<Sta
   return await response.json();
 };
 
-export const getPrices = async (id: StationId): Promise<PricesListResponse> => {
-  const response = await fetch(`${apiUrl}/prices/${id}`);
+export const getPrices = async (id: StationId, queries: PricesListQueries): Promise<PricesListResponse> => {
+  const response = await fetch(`${apiUrl}/prices/${id}?${new URLSearchParams({...queries}).toString()}`);
 
   return await response.json();
 };

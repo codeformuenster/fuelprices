@@ -98,10 +98,12 @@ const route = useRoute();
 const mainView = ref(null);
 
 const currentDate = new Date();
-const rangePeriod = ref({
+const rangePeriodDefault = {
   start: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
   end: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
-}) as Ref<DateRange>;
+};
+
+const rangePeriod = ref(rangePeriodDefault) as Ref<DateRange>;
 
 const pricesList: Ref<Price[]> = ref([]);
 const isPending: Ref<boolean> = ref(true);
@@ -157,12 +159,20 @@ const chartData = computed(() => {
   };
 });
 
-watch(() => router.currentRoute.value, async (newVal) => {
-  if (newVal.params.id) {
-    isPending.value = true;
+const getPricesByDateRange = async () => {
+  isPending.value = true;
+
+  if (rangePeriod.value) {
+    const startDate: string = rangePeriod.value?.start?.toString() || new Date().toISOString();
+    const endDate = rangePeriod.value?.end?.toString() || new Date().toISOString();
+
+    const queries = {
+      startDay: startDate,
+      endDay: endDate,
+    };
 
     try {
-      const result = await getPrices(route.params.id as string);
+      const result = await getPrices(route.params.id as string, queries);
       pricesList.value = result.data;
 
     } catch (error) {
@@ -171,12 +181,18 @@ watch(() => router.currentRoute.value, async (newVal) => {
       isPending.value = false;
     }
   }
+};
+
+watch(() => router.currentRoute.value, async (newVal) => {
+  if (newVal.params.id) {
+    rangePeriod.value = rangePeriodDefault;
+    await getPricesByDateRange();
+  }
 }, {immediate: true});
 
 watch(rangePeriod, (newVal) => {
   if (newVal.start && newVal.end) {
-
-    console.log(newVal);
+    getPricesByDateRange();
   }
 });
 </script>

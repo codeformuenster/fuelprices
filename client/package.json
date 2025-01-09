@@ -1,0 +1,44 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "description": "frontend for fuel prices in Munster app ",
+  "private": true,
+  "type": "module",
+  "author": "milk <milk00000000000000@gmail.com>",
+  "homepage": "https://github.com/codeformuenster/fuelprices#readme",
+  "license": "MIT",
+  "scripts": {
+    "local": "vite --mode localenv",
+    "dev": "vite build --mode development",
+    "prod": "vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@types/mapbox-gl": "^3.4.1",
+    "chart.js": "^4.4.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.468.0",
+    "mapbox-gl": "^3.8.0",
+    "radix-vue": "^1.9.11",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul-vue": "^0.2.0",
+    "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.10.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "autoprefixer": "^10.4.20",
+    "npm-run-all2": "^7.0.1",
+    "tailwindcss": "^3.4.16",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.1",
+    "vite-plugin-vue-devtools": "^7.6.5",
+    "vue-tsc": "^2.1.10"
+  }
+}

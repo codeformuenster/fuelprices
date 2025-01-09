@@ -198,7 +198,6 @@ const getPricesByDateRange = async () => {
 watch(() => router.currentRoute.value, async (newVal) => {
   if (newVal.params.id) {
     rangePeriod.value = rangePeriodDefault;
-    await getPricesByDateRange();
   }
 }, {immediate: true});
 
@@ -206,6 +205,14 @@ watch(rangePeriod, (newVal) => {
   if (newVal.start && newVal.end) {
     getPricesByDateRange();
   }
+});
+
+const refreshPrices = async () => {
+  await getPricesByDateRange();
+}
+
+defineExpose({
+  refreshPrices
 });
 </script>
 

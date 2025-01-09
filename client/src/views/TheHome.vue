@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import StationsList from '@/views/StationsList.vue';
@@ -68,6 +68,8 @@ const currentCenter = ref();
 
 const router = useRouter();
 const route = useRoute();
+
+let intervalId = null;
 
 const setActiveStation = (id: StationId) => {
   const station = stations.value.find((item) => item.id === id);
@@ -118,6 +120,12 @@ onMounted(async () => {
 
       if (currentCity.value) {
         await stationsList(currentCity.value.id);
+
+        intervalId = setInterval(async () => {
+          if (currentCity.value) {
+            await stationsList(currentCity.value.id);
+          }
+        }, 1000*60*10);
       }
     }
   } catch (error) {
@@ -126,6 +134,10 @@ onMounted(async () => {
     isPending.value = false;
   }
 });
+
+onUnmounted(() => {
+  intervalId = null
+})
 
 watch(() => router.currentRoute.value, (newVal) => {
   if (newVal.params.id) {

@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div ref="mainView">
     <h3 class="flex items-center text-lg font-semibold leading-none tracking-tight">
       Price change history
     </h3>
-    <p id="radix-vue-dialog-description-v-25-2" class="text-sm text-muted-foreground">
+    <p class="text-sm text-muted-foreground mb-4">
       Here you can view the price change per day or use the filter and select the period you are interested in.
     </p>
 
-    <div class="price-chart">
+    <CalendarRange v-model="rangePeriod" :mainView="mainView"/>
+
+    <div class="mt-4">
       <Line
         v-if="!isPending"
         :data="chartData"
@@ -35,10 +37,13 @@ import { computed, ref, type Ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Line } from 'vue-chartjs';
 
-import type { Price, Station } from '@/types/models.ts';
+import type { Price } from '@/types/models.ts';
 import { type Point, verticalLinePlugin } from '@/plugins/chartjs.ts';
 
 import { getPrices } from '@/api/services/mainService.ts';
+import CalendarRange from '@/components/CalendarRange.vue';
+import { CalendarDate } from '@internationalized/date';
+import type { DateRange } from 'radix-vue';
 
 
 ChartJS.register(
@@ -90,6 +95,14 @@ const options: CustomChartOptions = {
 const router = useRouter();
 const route = useRoute();
 
+const mainView = ref(null);
+
+const currentDate = new Date();
+const rangePeriod = ref({
+  start: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
+  end: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
+}) as Ref<DateRange>;
+
 const pricesList: Ref<Price[]> = ref([]);
 const isPending: Ref<boolean> = ref(true);
 
@@ -112,7 +125,7 @@ const chartData = computed(() => {
       ) {
         options.lineAtIndex.push({
           index: i,
-          label: currentDate.toISOString().split('T')[0]
+          label: currentDate.toLocaleString().split(',')[0]
         });
       }
 
@@ -134,7 +147,7 @@ const chartData = computed(() => {
       fill: false,
       cubicInterpolationMode: 'monotone',
       tension: 0.1,
-      data: typeE10.reverse()
+      data: typeE10
     },
   ];
 
@@ -159,6 +172,13 @@ watch(() => router.currentRoute.value, async (newVal) => {
     }
   }
 }, {immediate: true});
+
+watch(rangePeriod, (newVal) => {
+  if (newVal.start && newVal.end) {
+
+    console.log(newVal);
+  }
+});
 </script>
 
 <style scoped>

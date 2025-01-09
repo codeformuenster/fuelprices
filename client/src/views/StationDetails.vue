@@ -24,7 +24,7 @@
         </h2>
       </div>
 
-      <div class="grid gap-4 py-4">
+      <div class="grid gap-6 py-4">
         <StationInfoList :address="props?.activeStation?.address"
                          :trend="props?.activeStation?.trend.e10"
                          :price="props?.activeStation?.e10"

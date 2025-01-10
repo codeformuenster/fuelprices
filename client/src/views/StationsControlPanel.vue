@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center absolute z-10 top-2 left-2">
     <Select v-model="fuelType">
-      <SelectTrigger class="w-[100px]">
+      <SelectTrigger class="w-[100px] me-3">
         <SelectValue placeholder=""/>
       </SelectTrigger>
       <SelectContent>
@@ -19,7 +19,7 @@
       </SelectContent>
     </Select>
 
-    <ShowFavoritesButton class="ms-3"/>
+    <ShowFavoritesButton/>
   </div>
 </template>
 
@@ -42,8 +42,8 @@ const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 const fuelType = ref(storage.value);
 
 watchEffect(() => {
-  if(fuelType.value){
-    storage.value = fuelType.value
+  if (fuelType.value) {
+    storage.value = fuelType.value;
   }
 });
 </script>

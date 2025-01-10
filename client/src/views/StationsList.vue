@@ -58,7 +58,7 @@ interface Props {
   data: Station[];
   favorites: string[];
   activeStation: Station;
-  fuelType: string
+  fuelType: string;
 }
 
 const props = defineProps<Props>();

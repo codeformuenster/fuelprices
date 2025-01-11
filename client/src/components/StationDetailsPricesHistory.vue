@@ -87,6 +87,10 @@ const options: CustomChartOptions = {
     y: {
       ticks: {
         callback: function (value) {
+          if (typeof value === 'number') {
+            return '€' + parseFloat((value).toFixed(3));
+          }
+
           return '€' + value;
         }
       }
@@ -122,11 +126,11 @@ const chartData = computed(() => {
     super: number[],
     diesel: number[],
   }
-  const prices:PricesCollector = {
+  const prices: PricesCollector = {
     e10: [],
     super: [],
     diesel: [],
-  }
+  };
 
   if (pricesList.value.length > 0) {
     for (let i = 0; i < pricesList.value.length; i++) {
@@ -186,7 +190,6 @@ const getPricesByDateRange = async () => {
     try {
       const result = await getPrices(route.params.id as string, queries);
       pricesList.value = result.data;
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -209,7 +212,7 @@ watch(rangePeriod, (newVal) => {
 
 const refreshPrices = async () => {
   await getPricesByDateRange();
-}
+};
 
 defineExpose({
   refreshPrices

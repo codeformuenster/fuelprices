@@ -1,6 +1,6 @@
 <template>
   <p class="text-xl font-semibold tracking-tight leading-none">
-    <span class="text-xl font-semibold">€</span>
+    <span class="text-xl">€</span>
     {{mainPrice}}<span
       class="text-sm inline-block align-top leading-none">{{ secondaryPrice }}</span>
   </p>

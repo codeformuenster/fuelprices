@@ -22,8 +22,8 @@
     <ShowFavoritesButton/>
 
     <div
-      class="justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background border border-input bg-background shadow-sm px-4 py-2 flex items-center h-10 ms-3">
-      <PriceValue :price="currentAveragePrice"/>
+      class="justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background border border-input bg-background shadow-sm px-4 py-2 flex items-center h-10 ms-3">
+      <PriceValue class="font-light" :price="currentAveragePrice"/>
 
       <TooltipProvider delayDuration="0">
         <Tooltip>

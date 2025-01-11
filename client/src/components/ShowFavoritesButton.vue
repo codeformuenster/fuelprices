@@ -1,5 +1,5 @@
 <template>
-  <TooltipProvider>
+  <TooltipProvider delayDuration="0">
     <Tooltip>
       <TooltipTrigger as-child>
         <Button variant="outline" size="icon" class="flex items-center h-10"

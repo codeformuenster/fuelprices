@@ -31,6 +31,7 @@ import type { AveragePrice, Station, StationId } from '@/types/models.ts';
 import { Skeleton } from '@/components/ui/skeleton';
 import StationsControllPanel from '@/views/StationsControlPanel.vue';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
+import { useRouter } from 'vue-router';
 
 
 interface Props {
@@ -48,6 +49,8 @@ interface Markers {
 }
 
 const props = defineProps<Props>();
+
+const router = useRouter();
 
 const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
@@ -112,9 +115,9 @@ ${price.slice(0, price.length - 1)}
 </div>
 </div>`;
 
-  // markerElement.addEventListener('click', () => {
-  //   emits('onClickMarker', data);
-  // });
+  markerElement.addEventListener('click', () => {
+    router.push(`/${data.id}`);
+  });
 
   return markerElement;
 };
@@ -238,6 +241,10 @@ defineExpose({
 </script>
 
 <style>
+.custom-marker {
+  cursor: pointer;
+}
+
 .custom-marker.active, .custom-marker.highlighted {
   z-index: 999999999;
 }

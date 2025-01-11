@@ -50,3 +50,16 @@ export interface Price {
     diesel: null | string,
   }
 }
+
+export interface AveragePrice {
+  date: Date,
+  super: string,
+  e10: string,
+  diesel: string,
+}
+
+export interface FuelLabels {
+  super: string;
+  e10: string;
+  diesel: string;
+}

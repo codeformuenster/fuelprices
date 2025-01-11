@@ -2,7 +2,7 @@
   <div class="flex ease-in-out duration-200 relative"
        :class="activeStation ? 'h-[25%]' : 'h-full'"
   >
-    <StationsControllPanel/>
+    <StationsControllPanel :averagePrice="averagePrice"/>
 
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
@@ -26,7 +26,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { symmetricArrayDiff } from '@/utils/array.ts';
 
-import type { Station, StationId } from '@/types/models.ts';
+import type { AveragePrice, Station, StationId } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import StationsControllPanel from '@/views/StationsControlPanel.vue';
@@ -39,7 +39,7 @@ interface Props {
   favorites: StationId[];
   activeStation: Station;
   highlightedStation: StationId;
-  fuelType: string;
+  averagePrice: AveragePrice;
 }
 
 interface Markers {

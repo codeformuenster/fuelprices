@@ -21,6 +21,7 @@
                      :favorites="favoritesList"
                      :highlightedStation="highlightedStationId"
                      :activeStation="activeStation"
+                     :averagePrice="currentAveragePrice"
         />
 
         <router-view v-slot="{ Component }">
@@ -43,17 +44,18 @@ import { useRoute, useRouter } from 'vue-router';
 import StationsList from '@/views/StationsList.vue';
 import StationsMap from '@/views/StationsMap.vue';
 
-import type { City, Station, StationId } from '@/types/models.ts';
+import type { AveragePrice, City, Station, StationId } from '@/types/models.ts';
 
 import useFavorites from '@/composable/useFavorites.ts';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
 
-import { getCities, getStationsList } from '@/api/services/mainService.ts';
+import { getAveragePrice, getCities, getStationsList } from '@/api/services/mainService.ts';
 
 
 const stationsMap = ref(null);
 const currentCity: Ref<undefined | City> = ref(undefined);
 const stations: Ref<Station[]> = ref([]);
+const currentAveragePrice: Ref<null | AveragePrice> = ref(null);
 const isPending: Ref<true | false> = ref(true);
 const isPendingList: Ref<true | false> = ref(true);
 
@@ -83,7 +85,7 @@ const setHighlightedStation = (id: StationId) => {
   }
 };
 
-const stationsList = async (cityId: string) => {
+const getStationsListByCity = async (cityId: string) => {
   isPendingList.value = true;
 
   try {
@@ -93,6 +95,19 @@ const stationsList = async (cityId: string) => {
     if (route.params.id) {
       setActiveStation(route.params.id as string);
     }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isPendingList.value = false;
+  }
+};
+
+const getCurrentAveragePrice = async () => {
+  isPendingList.value = true;
+
+  try {
+    const result = await getAveragePrice();
+    currentAveragePrice.value = result.data;
   } catch (error) {
     console.log(error);
   } finally {
@@ -119,13 +134,13 @@ onMounted(async () => {
       currentCenter.value = currentCity?.value?.location.coordinates;
 
       if (currentCity.value) {
-        await stationsList(currentCity.value.id);
+        await Promise.all([getStationsListByCity(currentCity.value.id), getCurrentAveragePrice()])
 
         intervalId = setInterval(async () => {
           if (currentCity.value) {
-            await stationsList(currentCity.value.id);
+            await Promise.all([getStationsListByCity(currentCity.value.id), getCurrentAveragePrice()])
           }
-        }, 1000*60*10);
+        }, 1000*60*5);
       }
     }
   } catch (error) {

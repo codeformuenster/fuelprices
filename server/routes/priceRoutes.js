@@ -1,8 +1,10 @@
 import express from 'express';
-import { getPrices } from '../controllers/priceController.js';
+import { getPrices, getAveragePrices } from '../controllers/priceController.js';
 
 const router = express.Router();
 
+router.route('/prices/average-price')
+  .get(getAveragePrices);
 router.route('/prices/:id')
   .get(getPrices);
 

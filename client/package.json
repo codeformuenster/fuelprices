@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "local": "vite --mode localenv",
-    "dev": "vite build --mode development",
+    "dev": "vite --mode development",
     "prod": "vite build --mode production",
     "preview": "vite preview"
   },

@@ -1,4 +1,4 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/milk-2-dev/fuel-price/pull/73 -->
+<!-- Improved compatibility of back to top link: See: https://github.com/codeformuenster/fuelprices/pull/73 -->
 <a id="readme-top"></a>
 
 
@@ -21,7 +21,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/milk-2-dev/fuel-price">
+  <a href="https://github.com/codeformuenster/fuelprices">
     <img src="/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
@@ -32,9 +32,9 @@
     <br />
     <a href="https://fuel-price-client-dev.onrender.com/">View Demo</a>
     ·
-    <a href="https://github.com/milk-2-dev/fuel-price/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/codeformuenster/fuelprices/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/milk-2-dev/fuel-price/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/codeformuenster/fuelprices/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -43,7 +43,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This application will allow the user to monitor the current price of fuel. It is also possible to see the dynamics of price changes over a certain period.
+This application will allow the user to monitor the current price of fuel in Munster. It is also possible to see the dynamics of price changes over a certain period.
 Currently, the app uses the [api][api-url], which provides data on fuel in Germany.
 
 ### Built With
@@ -53,6 +53,7 @@ Currently, the app uses the [api][api-url], which provides data on fuel in Germa
 * ![Vue][Vue.js]
 * ![Node.js][Node.js]
 * ![Mapbox][Mapbox]
+* ![Tailwindcss][Tailwindcss]
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -62,14 +63,10 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-Personally, I use yarn as a package manager
+Personally, I use npm as a package manager
 * npm
   ```sh
   npm install npm@latest -g
-  ```
-* yarn
-  ```sh
-  npm install --global yarn
   ```
 
 ### Installation
@@ -78,37 +75,32 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/milk-2-dev/fuel-price.git
+   git clone https://github.com/codeformuenster/fuelprices.git
    ```
 2. Install NPM packages
    ```sh
-   yarn install
+   npm run install
    ```
 3. Copy .env file and create your env file:
-   - for server folder 'local' or 'development'
-   - for client folder 'localenv' or 'development'
+   - for server folder, 'env.local'
+   - for client folder 'env.localenv'
 5. Run projects locally:
    - for server
       ```sh
-      yarn dev:local
+      npm run local
       ```
    - for client
       ```sh
-      yarn dev:local
+      npm run local
       ```
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add Changelog
-  - [ ] Add the ability to add stations to favorites
-    - [ ] Add filter for favorites
-- [ ] Add possibility to add new stations and cities
-- [ ] Show a price forecast
 - [ ] Create mobile app
 
 
-See the [open issues](https://github.com/milk-2-dev/fuel-price/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/codeformuenster/fuelprices/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -120,9 +112,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Milk - milk00000000000000@gmail.com
+https://codeformuenster.org/#projekte
 
-Project Link: [https://github.com/milk-2-dev/fuel-price](https://github.com/milk-2-dev/fuel-price)
+Project Link: [https://github.com/codeformuenster/fuelprices](https://github.com/codeformuenster/fuelprices)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -133,19 +125,19 @@ Project Link: [https://github.com/milk-2-dev/fuel-price](https://github.com/milk
 [demo-url]: https://fuel-price-client-dev.onrender.com/
 
 [contributors-shield]: https://img.shields.io/github/contributors/milk-2-dev/fuel-price?style=for-the-badge&color=othneildrew
-[contributors-url]: https://github.com/milk-2-dev/fuel-price/graphs/contributors
+[contributors-url]: https://github.com/codeformuenster/fuelprices/graphs/contributors
 
 [forks-shield]: https://img.shields.io/github/forks/milk-2-dev/fuel-price?style=for-the-badge&color=%2340AEF0
-[forks-url]: https://github.com/milk-2-dev/fuel-price/network/members
+[forks-url]: https://github.com/codeformuenster/fuelprices/network/members
 
 [stars-shield]: https://img.shields.io/github/stars/milk-2-dev/fuel-price?style=for-the-badge&color=gold
-[stars-url]: https://github.com/milk-2-dev/fuel-price/stargazers
+[stars-url]: https://github.com/codeformuenster/fuelprices/stargazers
 
 [issues-shield]: https://img.shields.io/github/issues/milk-2-dev/fuel-price?style=for-the-badge&color=red
-[issues-url]: https://github.com/milk-2-dev/fuel-price/issues
+[issues-url]: https://github.com/codeformuenster/fuelprices/issues
 
 [license-shield]: https://img.shields.io/github/license/milk-2-dev/fuel-price?style=for-the-badge
-[license-url]: https://github.com/milk-2-dev/fuel-price/blob/master/LICENSE.txt
+[license-url]: https://github.com/codeformuenster/fuelprices/blob/master/LICENSE.txt
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/roman-klimov-b68baa150/
@@ -158,4 +150,6 @@ Project Link: [https://github.com/milk-2-dev/fuel-price](https://github.com/milk
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Mapbox]: https://img.shields.io/badge/Mapbox-35495E?style=for-the-badge&logo=mapbox&logoColor=4FC08D
+[Tailwindcss]: https://img.shields.io/badge/tailwindcss-35495E?style=for-the-badge&logo=tailwindcss&logoColor=4FC08D
+
 

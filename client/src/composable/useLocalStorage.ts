@@ -44,7 +44,7 @@ const useLocalStorage = (storageKey: string, defaultValue: any = '') => {
   });
 
   watchEffect(() => {
-    if (storage.value) {
+    if (storage.value !== null) {
       localStorage.setItem(storageKey, JSON.stringify(storage.value));
       window.dispatchEvent(
         new StorageEvent('storage', { key: storageKey, newValue: storage.value, storageArea: localStorage })

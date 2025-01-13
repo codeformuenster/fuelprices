@@ -1,4 +1,5 @@
 import type {
+  AveragePriceResponse,
   CitiesListResponse,
   PricesListQueries,
   PricesListResponse,
@@ -23,6 +24,12 @@ export const getStationsList = async (queries: StationsListQueries): Promise<Sta
 
 export const getPrices = async (id: StationId, queries: PricesListQueries): Promise<PricesListResponse> => {
   const response = await fetch(`${apiUrl}/prices/${id}?${new URLSearchParams({...queries}).toString()}`);
+
+  return await response.json();
+};
+
+export const getAveragePrice = async (): Promise<AveragePriceResponse> => {
+  const response = await fetch(`${apiUrl}/prices/average-price`);
 
   return await response.json();
 };

@@ -2,9 +2,9 @@
   <TooltipProvider delayDuration="0">
     <Tooltip>
       <TooltipTrigger as-child>
-        <Button variant="ghost" size="icon" class="flex items-center"
-                :class="isFavorite && 'item__favorite'"
-                @click="handleAddToFavorites"
+        <Button variant="outline" size="icon" class="flex items-center h-10"
+                :class="storage && 'item__favorite'"
+                @click="handleClickShowFavorites"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
             <path
@@ -14,51 +14,27 @@
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>{{ isFavorite ? 'Remove from favorites' : 'Add to favorites'}}</p>
+        <p>{{ storage ? 'Show all stations' : 'Show favorites stations' }}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
+
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import useFavorites from '@/composable/useFavorites.ts';
-
 import { Button } from '@/components/ui/button';
+import type { Ref } from 'vue';
+import useLocalStorage from '@/composable/useLocalStorage.ts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+const {storage}: { storage: Ref<boolean> } = useLocalStorage('showOnlyFavorites', false);
 
-interface Props {
-  stationId: string;
-  favorites: string[];
-}
-
-const props = defineProps<Props>();
-
-const {addFavorite, removeFavorite} = useFavorites();
-
-const isFavorite = computed(() => {
-  if (props?.favorites?.length) {
-    return props.favorites.some(item => item === props.stationId);
-  }
-
-  return false;
-});
-
-const handleAddToFavorites = () => {
-  if (isFavorite.value) {
-    removeFavorite(props.stationId);
-  } else {
-    addFavorite(props.stationId);
-  }
+const handleClickShowFavorites = () => {
+  storage.value = !storage.value;
 };
-
 
 </script>
 
-<style>
-.item__favorite svg {
-  color: #ffa500
-}
+<style scoped>
+
 </style>

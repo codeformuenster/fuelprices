@@ -5,12 +5,12 @@
     <div v-if="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
     >
-<!--      TODO:// Need to create another preloader, because this one make my eyes crying-->
-<!--      <Skeleton class="h-[125px] w-[250px] rounded-xl"/>-->
-<!--      <div class="space-y-2">-->
-<!--        <Skeleton class="h-4 w-[250px]"/>-->
-<!--        <Skeleton class="h-4 w-[200px]"/>-->
-<!--      </div>-->
+      <!--      TODO:// Need to create another preloader, because this one make my eyes crying-->
+      <!--      <Skeleton class="h-[125px] w-[250px] rounded-xl"/>-->
+      <!--      <div class="space-y-2">-->
+      <!--        <Skeleton class="h-4 w-[250px]"/>-->
+      <!--        <Skeleton class="h-4 w-[200px]"/>-->
+      <!--      </div>-->
     </div>
     <div v-slse>
       <div class="flex flex-col gap-y-1.5 text-center sm:text-left">
@@ -27,11 +27,11 @@
       <div class="grid gap-6 py-4">
         <StationInfoList :address="props?.activeStation?.address"
                          :trend="props?.activeStation?.trend[storage as keyof Station['trend']]"
-                         :price="props?.activeStation[storage as keyof Station]"
+                         :price="props?.activeStation && props?.activeStation[storage as keyof Station]"
                          :updatedAt="props?.activeStation?.latestPriceUpdatedAt"
         />
 
-        <StationDetailsPricesHistory/>
+        <StationDetailsPricesHistory ref="priceHistory"/>
       </div>
 
       <Button variant="ghost"
@@ -60,7 +60,7 @@ import { Button } from '@/components/ui/button';
 import AddToFavoritesButton from '@/components/AddToFavoritesButton.vue';
 import StationInfoList from '@/components/StationInfoList.vue';
 import StationDetailsPricesHistory from '@/components/StationDetailsPricesHistory.vue';
-import type { Ref } from 'vue';
+import { ref, type Ref, watchEffect } from 'vue';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
 
 interface Props {
@@ -73,9 +73,17 @@ const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
 const props = defineProps<Props>();
 
+const priceHistory = ref(null);
+
 const handleClickClose = () => {
-  router.push('/')
-}
+  router.push('/');
+};
+
+watchEffect(() => {
+  if (props.activeStation) {
+    priceHistory?.value?.refreshPrices();
+  }
+});
 </script>
 
 <style>

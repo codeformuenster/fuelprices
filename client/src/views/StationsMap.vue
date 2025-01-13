@@ -2,7 +2,7 @@
   <div class="flex ease-in-out duration-200 relative"
        :class="activeStation ? 'h-[25%]' : 'h-full'"
   >
-    <StationsControllPanel/>
+    <StationsControllPanel :averagePrice="averagePrice"/>
 
     <div v-show="isPending"
          class="flex flex-col w-full h-full items-center justify-center space-y-3"
@@ -26,11 +26,12 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { symmetricArrayDiff } from '@/utils/array.ts';
 
-import type { Station, StationId } from '@/types/models.ts';
+import type { AveragePrice, Station, StationId } from '@/types/models.ts';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import StationsControllPanel from '@/views/StationsControlPanel.vue';
 import useLocalStorage from '@/composable/useLocalStorage.ts';
+import { useRouter } from 'vue-router';
 
 
 interface Props {
@@ -39,7 +40,7 @@ interface Props {
   favorites: StationId[];
   activeStation: Station;
   highlightedStation: StationId;
-  fuelType: string;
+  averagePrice: AveragePrice;
 }
 
 interface Markers {
@@ -48,6 +49,8 @@ interface Markers {
 }
 
 const props = defineProps<Props>();
+
+const router = useRouter();
 
 const {storage}: { storage: Ref<string> } = useLocalStorage('fuelType', 'e10');
 
@@ -112,9 +115,9 @@ ${price.slice(0, price.length - 1)}
 </div>
 </div>`;
 
-  // markerElement.addEventListener('click', () => {
-  //   emits('onClickMarker', data);
-  // });
+  markerElement.addEventListener('click', () => {
+    router.push(`/${data.id}`);
+  });
 
   return markerElement;
 };
@@ -238,6 +241,10 @@ defineExpose({
 </script>
 
 <style>
+.custom-marker {
+  cursor: pointer;
+}
+
 .custom-marker.active, .custom-marker.highlighted {
   z-index: 999999999;
 }

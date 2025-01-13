@@ -1,5 +1,6 @@
 import Price from '../mongodb/models/price.js';
 import mongoose from 'mongoose';
+
 const {ObjectId} = mongoose.Types;
 
 export const getPrices = async (req, res) => {
@@ -15,29 +16,36 @@ export const getPrices = async (req, res) => {
       {
         $match: {
           stationId: new ObjectId(id),
-          updatedAt: { $gte: startDate, $lte: endDate },
+          updatedAt: {$gte: startDate, $lte: endDate},
         },
       },
-      { $sort: { updatedAt: -1 } },
+      {$sort: {updatedAt: -1}},
       {
         $group: {
           _id: {
-            e10: "$e10",
-            super: "$super",
-            diesel: "$diesel",
+            e10: '$e10',
+            super: '$super',
+            diesel: '$diesel',
           },
-          firstRecord: { $first: "$$ROOT" },
-          lastRecord: { $last: "$$ROOT" },
+          firstRecord: {$first: '$$ROOT'},
+          lastRecord: {$last: '$$ROOT'},
+          count: {$sum: 1},
         },
       },
       {
         $project: {
-          records: ["$firstRecord", "$lastRecord"],
+          records: {
+            $cond: [
+              {$eq: [ '$count', 1 ]},
+              [ '$firstRecord' ],
+              [ '$firstRecord', '$lastRecord' ],
+            ],
+          },
         },
       },
-      { $unwind: "$records" },
-      { $replaceRoot: { newRoot: "$records" } },
-      { $sort: { updatedAt: 1 } },
+      {$unwind: '$records'},
+      {$replaceRoot: {newRoot: '$records'}},
+      {$sort: {updatedAt: 1}},
     ]);
 
     res.status(200).json({success: true, data: prices});
@@ -45,3 +53,14 @@ export const getPrices = async (req, res) => {
     res.status(500).json({success: false, message: error});
   }
 };
+
+export const getAveragePrices = async (req, res) => {
+  try{
+    const response = await fetch('https://www.benzinpreis-aktuell.de/api.v2.php?data=nationwide');
+    const price = await response.json();
+
+    res.status(200).json({success: true, data: price});
+  } catch (error) {
+    res.status(500).json({success: false, message: error});
+  }
+}

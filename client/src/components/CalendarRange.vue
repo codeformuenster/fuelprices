@@ -58,6 +58,7 @@ const emits = defineEmits([ 'update:modelValue' ]);
 
 const currentDate = new Date();
 const currentDateSpecially = new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+const firstDate = new CalendarDate(2025, 1, 11);
 
 const getLang = () => {
   if (navigator.languages !== undefined)
@@ -77,7 +78,10 @@ const value = computed(() => {
 });
 
 const disableDates = (date: CalendarDate) => {
-  return date.compare(currentDateSpecially) > 0;
+  const nextDates = date.compare(currentDateSpecially) > 0;
+  const prevDates = date.compare(firstDate) < 0;
+
+  return prevDates || nextDates;
 };
 
 const handleUpdateRange = (newVal: DateRange) => {

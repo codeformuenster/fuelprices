@@ -1,4 +1,4 @@
-import type { City, Price, Station } from '@/types/models.ts';
+import type { AveragePrice, City, Price, Station } from '@/types/models.ts';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -14,6 +14,9 @@ export interface StationsListResponse extends ApiResponse<Station[]> {
 }
 
 export interface PricesListResponse extends ApiResponse<Price[]> {
+}
+
+export interface AveragePriceResponse extends ApiResponse<AveragePrice> {
 }
 
 export interface StationsListQueries {

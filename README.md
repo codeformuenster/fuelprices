@@ -30,7 +30,7 @@
     App for monitoring fuel prices in Munster.
     <br />
     <br />
-    <a href="https://fuel-price-client-dev.onrender.com/">View Demo</a>
+    <a href="https://fuelprices-1075.onrender.com/">View Demo</a>
     ·
     <a href="https://github.com/codeformuenster/fuelprices/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·

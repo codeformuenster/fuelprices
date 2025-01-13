@@ -27,7 +27,7 @@
 
 <h3 align="center">Fuel price</h3>
   <p align="center">
-    App for monitoring fuel prices in Germany.
+    App for monitoring fuel prices in Munster.
     <br />
     <br />
     <a href="https://fuel-price-client-dev.onrender.com/">View Demo</a>
@@ -58,7 +58,6 @@ Currently, the app uses the [api][api-url], which provides data on fuel in Germa
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
@@ -71,8 +70,6 @@ Personally, I use npm as a package manager
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
 1. Clone the repo
    ```sh
    git clone https://github.com/codeformuenster/fuelprices.git
@@ -81,7 +78,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    npm run install
    ```
-3. Copy .env file and create your env file:
+3. Copy .env file and create your local env file:
    - for server folder, 'env.local'
    - for client folder 'env.localenv'
 5. Run projects locally:
@@ -122,7 +119,7 @@ Project Link: [https://github.com/codeformuenster/fuelprices](https://github.com
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [api-url]: https://www.benzinpreis-aktuell.de/
-[demo-url]: https://fuel-price-client-dev.onrender.com/
+[demo-url]: https://fuelprices-1075.onrender.com
 
 [contributors-shield]: https://img.shields.io/github/contributors/milk-2-dev/fuel-price?style=for-the-badge&color=othneildrew
 [contributors-url]: https://github.com/codeformuenster/fuelprices/graphs/contributors

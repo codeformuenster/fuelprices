@@ -29,14 +29,19 @@ export const getStationsList = async (req, res) => {
         {
           $lookup: {
             from: 'prices',
-            localField: '_id',
-            foreignField: 'stationId',
+            let: { stationId: '$_id' },
+            pipeline: [
+              { $match: { $expr: { $eq: ['$stationId', '$$stationId'] } } },
+              { $sort: { updatedAt: -1 } }, // Сортуємо за `updatedAt` у спадному порядку
+              { $limit: 1 } // Беремо лише останній запис
+            ],
             as: 'prices'
           }
         },
         {
           $unwind: {
             path: '$prices',
+            preserveNullAndEmptyArrays: true
           }
         },
         {
@@ -79,6 +84,7 @@ export const getStationsList = async (req, res) => {
 
     res.status(200).json(response);
   } catch (error) {
+    console.log(error);
     res.status(500).json({success: false, message: error});
   }
 };

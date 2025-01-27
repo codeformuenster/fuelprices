@@ -32,8 +32,8 @@ export const getStationsList = async (req, res) => {
             let: { stationId: '$_id' },
             pipeline: [
               { $match: { $expr: { $eq: ['$stationId', '$$stationId'] } } },
-              { $sort: { updatedAt: -1 } }, // Сортуємо за `updatedAt` у спадному порядку
-              { $limit: 1 } // Беремо лише останній запис
+              { $sort: { updatedAt: -1 } },
+              { $limit: 1 }
             ],
             as: 'prices'
           }

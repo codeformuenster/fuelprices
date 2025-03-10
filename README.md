@@ -74,23 +74,41 @@ Personally, I use npm as a package manager
    ```sh
    git clone https://github.com/codeformuenster/fuelprices.git
    ```
-2. Install NPM packages
+2. Install NPM packages. 
    ```sh
-   npm run install
+   cd ./client
+   npm install
    ```
+
+   ```sh
+   cd ./server
+   npm install
+   ```
+
 3. Copy .env file and create your local env file:
    - for server folder, 'env.local'
    - for client folder 'env.localenv'
 5. Run projects locally:
    - for server
       ```sh
+      cd ./server
       npm run local
       ```
    - for client
       ```sh
+      cd ./client
       npm run local
       ```
 
+The first start of the server will check whether the data is in the database and if not, execute the seed function. The seed function will write the data for the city of Munster to the `cities` collection and the fuel stations for this city to the `stations` collection.
+It will also execute the first price fetch for these stations.
+
+**Note:** The cron function that updates prices is not run for the local environment. If you want it to do so, please? go to `cron.js` file and remove the following condition:
+```sh
+  if (process.env.NODE_ENV !== 'local') {
+    cron.schedule('*/10 * * * *', fetchAndSavePrice);
+  }
+```
 <!-- ROADMAP -->
 ## Roadmap
 

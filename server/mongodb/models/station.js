@@ -20,13 +20,12 @@ const Station = new mongoose.Schema({
   toJSON: {
     virtuals: true,
     transform: (doc, ret) => {
-      ret.id = ret._id; // Дублюємо _id у поле id
-      delete ret._id; // Видаляємо поле _id return ret;
+      ret.id = ret._id;
+      delete ret._id;
     }
   }
 });
 
-// Створюємо геопросторовий індекс для поля location
 Station.index({ location: "2dsphere" });
 
 const StationSchema = mongoose.model('stations', Station);

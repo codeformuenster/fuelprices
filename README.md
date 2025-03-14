@@ -62,10 +62,13 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-Personally, I use npm as a package manager
-* npm
+* Personally, I use npm as a package manager
   ```sh
   npm install npm@latest -g
+  ```
+* Run mongodb via docker container
+  ```sh
+  docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:latest
   ```
 
 ### Installation
